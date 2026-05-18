@@ -14,7 +14,11 @@ public class Mago {
 
 	@Override
 	public String toString() {
-		return "Mago [nombre=" + nombre + ", hechizos=" + hechizos + "]";
+		return  nombre + ", hechizos:" + hechizos + "";
+	}
+
+	public String getNombre() {
+		return nombre;
 	}
 	
 	

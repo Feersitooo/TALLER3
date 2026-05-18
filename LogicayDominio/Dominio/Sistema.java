@@ -95,12 +95,34 @@ public class Sistema {
 		}	
 	}
 	
+	public static void eliminarMago(Scanner sc,ArrayList<Mago> magosTotales) {
+		System.out.println("Que mago desea eliminar ? :");
+		int i = 1;
+		for (Mago mago : magosTotales) {
+			System.out.println(i+")"+mago);
+			i++;
+		}
+		int eliminar = sc.nextInt();
+		System.out.println("Mago " + magosTotales.get(eliminar-1).getNombre() + " Eliminado...");
+		magosTotales.remove(eliminar-1);
+		
+	}
+	
+	public static void mostrarHechizos(ArrayList<Hechizo> hechizosTotales) {
+		System.out.println("Mostrando todos los Hechizos : ");
+		for (Hechizo hechizo : hechizosTotales) {
+			System.out.println(hechizo);
+		}
+		
+	}
 	
 	
-	
-	
-	
-	
+	public static void mostrarMagos(ArrayList<Mago> magosTotales) {
+		System.out.println("Mostrando todos los Magos : ");
+		for (Mago mago : magosTotales) {
+			System.out.println(mago);
+		}
+	}
 	
 	
 	
@@ -168,7 +190,7 @@ public class Sistema {
 				break;
 				
 			case 3:
-				
+				eliminarMago(sc,magosTotales);
 				break;
 				
 			case 4:
@@ -211,11 +233,11 @@ public class Sistema {
 				break;
 				
 			case 3:
-				
+				mostrarHechizos(hechizosTotales);
 				break;
 				
 			case 4:
-				
+				mostrarMagos(magosTotales);
 				break;
 				
 			case 5:

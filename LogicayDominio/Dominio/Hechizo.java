@@ -19,7 +19,7 @@ public abstract class Hechizo {
 
 	@Override
 	public String toString() {
-		return "Hechizo [nombreHechizo=" + nombreHechizo + "]";
+		return  nombreHechizo ;
 	}
 	
 	
