@@ -12,6 +12,15 @@ public abstract class Hechizo {
 		this.tipo = tipo;
 		this.daño = daño;
 	}
+
+	public String getNombreHechizo() {
+		return nombreHechizo;
+	}
+
+	@Override
+	public String toString() {
+		return "Hechizo [nombreHechizo=" + nombreHechizo + "]";
+	}
 	
 	
 	

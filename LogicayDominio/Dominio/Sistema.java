@@ -1,11 +1,15 @@
 package taller3;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
 
 public class Sistema {
-
-	private Scanner sc = new Scanner(System.in);
 	
+	public Scanner sc = new Scanner(System.in);
+	public static ArrayList<Hechizo> hechizosTotales = new ArrayList<>();
+	public static ArrayList<Mago> magosTotales = new ArrayList<>();
 	public Sistema() {
 		super();
 	}
@@ -20,8 +24,96 @@ public class Sistema {
 		}
 	}
 	
+	public static void cargarHechizos(String rutaHechizos, ArrayList<Hechizo> hechizosTotales) {
+		try (Scanner sc1 = new Scanner(new File(rutaHechizos))){
+			String linea;
+			while(sc1.hasNextLine()) {
+				linea = sc1.nextLine();
+				String[] partes = linea.split(";");
+				String nombreHechizo = partes[0];
+				String tipo = partes[1].toLowerCase();
+				int dano = Integer.parseInt(partes[2]);
+				String[] partes2 = partes[3].split(",");
+				switch (tipo) {
+				
+				case "agua":
+					
+					int cantidadHeal  = Integer.parseInt(partes2[0]);
+					int presionDelAgua = Integer.parseInt(partes2[1]);
+					HechizoAgua agua = new HechizoAgua(nombreHechizo, tipo, dano, cantidadHeal, presionDelAgua);
+					hechizosTotales.add(agua);
+					break;
+				case "tierra":
+					int mejoraDefensa = Integer.parseInt(partes[3]);
+					HechizoTierra tierra = new HechizoTierra(nombreHechizo, tipo, dano, mejoraDefensa);
+					hechizosTotales.add(tierra);
+					break;
+				case "planta":
+					
+					int duracionStun = Integer.parseInt(partes2[0]);
+					int cantPlantas = Integer.parseInt(partes2[1]);
+					HechizoPlanta planta = new HechizoPlanta(nombreHechizo, tipo, dano, duracionStun, cantPlantas);
+					hechizosTotales.add(planta);
+					break;
+				case "fuego":
+					int duracionQuemadura = Integer.parseInt(partes[3]);
+					HechizoFuego fuego = new HechizoFuego(nombreHechizo, tipo, dano, duracionQuemadura);
+					hechizosTotales.add(fuego);
+					break;
+				}		
+			}		
+		}catch (FileNotFoundException e) {
+			
+		}
+		
+		
+		
+	}
+	
+	public static void cargarMagos(String rutaMagos,ArrayList<Hechizo> hechizosTotales) {
+		try (Scanner sc1 = new Scanner(new File(rutaMagos))){
+			String linea;
+			while(sc1.hasNextLine()) {
+				linea = sc1.nextLine();
+				ArrayList<Hechizo> hechizosTemp = new ArrayList<>();
+				String[] partes = linea.split(";");
+				String nombreMago = partes[0];
+				String hechizos = partes[1];
+				String[] partes2 = hechizos.split("\\|");
+				for (int i = 0; i < partes2.length; i++) {
+					for (Hechizo hechizo : hechizosTotales) {
+						if(partes2[i].equals(hechizo.getNombreHechizo())) {
+							hechizosTemp.add(hechizo);
+						}
+					}
+				}
+				Mago mago = new Mago(nombreMago,hechizosTemp);
+				magosTotales.add(mago);
+			}
+		}catch (FileNotFoundException e) {
+			
+		}	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public void menu() {
+		
+		String rutaHechizos = "src/Hechizos.txt";
+		String rutaMagos = "src/Magos.txt";
+		cargarHechizos(rutaHechizos, hechizosTotales);
+		cargarMagos(rutaMagos, hechizosTotales);
+		
+		
 		System.out.println("----Menu----");
 		System.out.println("1) Administrador");
 		System.out.println("2) Analista");
