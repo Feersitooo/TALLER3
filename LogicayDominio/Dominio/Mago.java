@@ -20,6 +20,14 @@ public class Mago {
 	public String getNombre() {
 		return nombre;
 	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public ArrayList<Hechizo> getHechizos() {
+		return hechizos;
+	}
 	
 	
 	

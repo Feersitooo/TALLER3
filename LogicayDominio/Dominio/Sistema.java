@@ -1,8 +1,11 @@
 package taller3;
 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.BufferedWriter;
 import java.io.File;
 
 public class Sistema {
@@ -10,10 +13,8 @@ public class Sistema {
 	public Scanner sc = new Scanner(System.in);
 	public static ArrayList<Hechizo> hechizosTotales = new ArrayList<>();
 	public static ArrayList<Mago> magosTotales = new ArrayList<>();
-	public Sistema() {
-		super();
-	}
-
+	
+	
 	
 	public void controlErrorLetras(int opcion) {
 		try {
@@ -95,6 +96,51 @@ public class Sistema {
 		}	
 	}
 	
+	public static void agregarMago(Scanner sc) {
+		System.out.println("Agregando nuevo mago....");
+		System.out.println("Ingrese nombre del mago :");
+		String nombreNuevoMago = sc.nextLine();
+		ArrayList<Hechizo> hechizosVacio = new ArrayList<>();
+		Mago magoNuevo = new Mago(nombreNuevoMago,hechizosVacio);
+		magosTotales.add(magoNuevo);
+		//se debe agregar un mago sin ningun hechizo ??
+	}
+	
+	public static void modificarMago(Scanner sc,ArrayList<Mago> magosTotales) {
+		
+		System.out.println("Que mago desea modificar ?");
+		int i = 1;
+		for(Mago mago : magosTotales) {
+			System.out.println(i + ") "+ mago);
+			i++;
+		}
+		
+		System.out.println("Que deseas modificar del mago " + magosTotales.get(i-1).getNombre());
+		System.out.println("1) Nombre");
+		System.out.println("2) Hechizos");
+		
+		int modificar = sc.nextInt();
+		
+		switch (modificar) {
+		
+		case 1:
+			System.out.println("Ingresa nuevo nombre :");
+			String nuevoNombre = sc.nextLine();
+			magosTotales.get(i-1).setNombre(nuevoNombre);
+			break;
+			
+		case 2:
+			System.out.println("Que deseas hacer ?");
+			System.out.println("1) Eliminar hechizo");
+			System.out.println("2) Agregar hechizo");
+			
+			
+		}
+		
+		
+	}
+	
+	
 	public static void eliminarMago(Scanner sc,ArrayList<Mago> magosTotales) {
 		System.out.println("Que mago desea eliminar ? :");
 		int i = 1;
@@ -116,7 +162,6 @@ public class Sistema {
 		
 	}
 	
-	
 	public static void mostrarMagos(ArrayList<Mago> magosTotales) {
 		System.out.println("Mostrando todos los Magos : ");
 		for (Mago mago : magosTotales) {
@@ -124,14 +169,49 @@ public class Sistema {
 		}
 	}
 	
+	public static void eliminarHechizo(Scanner sc,ArrayList<Hechizo> hechizosTotales) {
+		System.out.println("Que hechizo desea eliminar ? :");
+		int i = 1;
+		for (Hechizo hechizo : hechizosTotales) {
+			System.out.println(i+")"+ hechizo);
+			i++;
+		}
+		int eliminar = sc.nextInt();
+		System.out.println("hechizo " + hechizosTotales.get(eliminar-1).getNombreHechizo() + " Eliminado...");
+		hechizosTotales.remove(eliminar-1);
+		
+	}
 	
-	
-	
+	public static void guardarCambiosMagos() {
+		
+
+		try{
+			BufferedWriter escritor = new BufferedWriter(new FileWriter("src/Magos.txt"));
+			for (int i = 0; i < magosTotales.size(); i++) {
+				escritor.write(magosTotales.get(i).getNombre() + ";");
+				for (int j = 0; j < magosTotales.get(i).getHechizos().size(); j++) {
+					if(magosTotales.get(i).getHechizos().size()-1 == j) {
+						escritor.write(magosTotales.get(i).getHechizos().get(j)+"");
+					}else {
+						escritor.write(magosTotales.get(i).getHechizos().get(j) + "|");
+					}
+				}
+				escritor.newLine();	
+			} 
+			
+			escritor.close();
+		}catch (IOException E) {
+			
+		}	
+	}
 	
 	public void menu() {
 		
 		String rutaHechizos = "src/Hechizos.txt";
 		String rutaMagos = "src/Magos.txt";
+		hechizosTotales.clear();
+		magosTotales.clear();
+		
 		cargarHechizos(rutaHechizos, hechizosTotales);
 		cargarMagos(rutaMagos, hechizosTotales);
 		
@@ -178,19 +258,23 @@ public class Sistema {
 			switch (opcionAdmin) {
 			
 			case 0:
-				
-				opcionAdmin = 0;
+				System.out.println("Saliendo.......");
 				break;
 			case 1:
-				
+				agregarMago(sc);
+				guardarCambiosMagos();
+				opcionAdmin = -1;
 				break;
 				
 			case 2:
-				
+				//modificar mago
+				guardarCambiosMagos();
 				break;
 				
 			case 3:
 				eliminarMago(sc,magosTotales);
+				guardarCambiosMagos();
+				opcionAdmin = -1;
 				break;
 				
 			case 4:
@@ -202,10 +286,11 @@ public class Sistema {
 				break;
 				
 			case 6:
-				
+				eliminarHechizo(sc,hechizosTotales);
+				opcionAdmin = -1;
 				break;
 			}
-		}while (opcionAdmin != 0);
+		}while (opcionAdmin == -1);
 		menu();
 	}
 	
