@@ -407,7 +407,7 @@ public class Sistema {
 			System.out.println("2. Modificar Mago");
 			System.out.println("3. Eliminar Mago");
 			System.out.println("4. Agregar Hechizo");
-			System.out.println("5. Modificar Hechzo");
+			System.out.println("5. Modificar Hechizo");
 			System.out.println("6. Eliminar Hechizo");
 			
 			

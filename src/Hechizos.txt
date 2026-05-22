@@ -88,4 +88,3 @@ Ataque Arena;tierra;102;40
 Tierra Viva;tierra;46;36
 Origen Pulso;agua;21;30,208
 Bucle Arena;planta;15;2,8
-fersito culea bien;fuego;1555;1000
