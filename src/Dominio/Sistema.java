@@ -1,16 +1,19 @@
-package taller3;
+package Dominio;
 
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+
+
 import java.io.BufferedWriter;
 import java.io.File;
 
 public class Sistema {
 	
-	public Scanner sc = new Scanner(System.in);
+	public static Scanner sc = new Scanner(System.in);
 	public static ArrayList<Hechizo> hechizosTotales = new ArrayList<>();
 	public static ArrayList<Mago> magosTotales = new ArrayList<>();
 	
@@ -96,7 +99,8 @@ public class Sistema {
 		}	
 	}
 	
-	public static void agregarMago(Scanner sc) {
+	public static void agregarMago() {
+		sc.nextLine();
 		System.out.println("Agregando nuevo mago....");
 		System.out.println("Ingrese nombre del mago :");
 		String nombreNuevoMago = sc.nextLine();
@@ -154,6 +158,160 @@ public class Sistema {
 		
 	}
 	
+	
+	public static void agregarHechizo() {
+		sc.nextLine();
+		String tipohechizo;
+		String hechizoNuevo;
+		int dano = 0;
+		
+		
+		System.out.println("Agregando nuevo hechizo");
+		do {
+		System.out.println("Ingrese nombre del hechizo o 0 para salir:");
+		hechizoNuevo = sc.nextLine();
+		if(hechizoNuevo.equals("0")) break;
+	
+		do {
+			if(hechizoNuevo.equals("0")) break;
+		System.out.println("Ingrese el tipo del hechizo o 0 para salir :");
+		tipohechizo = sc.nextLine();
+		if(tipohechizo.equals("0")) break;
+		do {
+			if(hechizoNuevo.equals("0")) break;
+			if(tipohechizo.equals("0")) break;
+			System.out.println("Ingrese el daño de el hechizo");
+			 dano = sc.nextInt();
+			 if(dano< -1) {
+				 System.out.println("daño invalido intentar denuevo");
+			 }
+		}while(dano<0);
+		
+		switch(tipohechizo.toLowerCase().strip()) {
+		case "agua":
+		int cantcuracion ; 
+		do {
+			System.out.println("Ingrese cantidad de curacion");
+			cantcuracion = sc.nextInt();
+		}while(cantcuracion < 0);
+		int presionDelAgua ;
+		do {
+			System.out.println("Ingrese presion del agua");
+			presionDelAgua = sc.nextInt();
+		}while (presionDelAgua < 0);
+		HechizoAgua aguaNuevo = new HechizoAgua(hechizoNuevo, tipohechizo, dano,cantcuracion, presionDelAgua);
+		hechizosTotales.add(aguaNuevo);
+		break;
+	case "tierra":
+		int mejoraDefensa;
+		do {
+			System.out.println("seleccione la defensa");
+			mejoraDefensa = sc.nextInt();
+		}while(mejoraDefensa < 0);
+		HechizoTierra tierraNuevo = new HechizoTierra(hechizoNuevo, tipohechizo, dano , mejoraDefensa);
+		hechizosTotales.add(tierraNuevo);
+		break;
+	case "planta":
+		
+		int duracionStun ;
+		do {
+			System.out.println("Ingrese cantidad de stun (segundos que durara)");
+			duracionStun = sc.nextInt();
+		}while(duracionStun < 0);
+		int cantPlantas = 0;
+		do {
+			System.out.println("Ingrese las plantas que invocara");
+			cantPlantas = sc.nextInt();
+		}while (cantPlantas < 0);
+		HechizoPlanta plantaNuevo = new HechizoPlanta(hechizoNuevo, tipohechizo, dano , duracionStun, cantPlantas);
+		hechizosTotales.add(plantaNuevo);
+		break;
+	case "fuego":
+		int duracionQuemadura ;
+		do {
+			System.out.println("Ingrese la duracion de la quemadura");
+			duracionQuemadura = sc.nextInt();
+		}while (duracionQuemadura < 0);
+		HechizoFuego fuego = new HechizoFuego(hechizoNuevo, tipohechizo, dano, duracionQuemadura);
+		hechizosTotales.add(fuego);
+		break;
+	default: 
+		System.out.println("ese tipo no existe trate denuevo");
+		sc.nextLine();
+		break;
+		
+		}
+		
+		
+		
+		
+		}while(tipohechizo.equals("0"));
+		
+		}while(hechizoNuevo.equals("0") );
+		
+		
+		
+	}
+	
+	public static void GuardarCambiosHechizos() {
+	try{
+		BufferedWriter escritor = new BufferedWriter(new FileWriter("src/Hechizos.txt"));
+		for (int i = 0; i < hechizosTotales.size(); i++) {
+			escritor.write(hechizosTotales.get(i).getNombreHechizo() + ";" + hechizosTotales.get(i).getTipo() + ";" + Integer.toString(hechizosTotales.get(i).getDaño()) + ";");
+			String tipohechizo = hechizosTotales.get(i).getTipo();
+			switch(tipohechizo.toLowerCase()) {
+			 case "fuego":
+				 HechizoFuego fuego = (HechizoFuego) hechizosTotales.get(i); 
+				escritor.write(Integer.toString(fuego.getDuracionQuemadura()));
+				break;
+			case "agua":
+				HechizoAgua agua = (HechizoAgua) hechizosTotales.get(i);
+				escritor.write(Integer.toString(agua.getCantidadHeal()) + "," + Integer.toString(agua.getPresionDelAgua()));
+			break;
+			case "tierra":
+				HechizoTierra tierra = (HechizoTierra) hechizosTotales.get(i);
+				escritor.write(Integer.toString(tierra.getMejoraDefensa()));
+						
+				break;
+			case "planta":
+				HechizoPlanta planta = (HechizoPlanta) hechizosTotales.get(i);
+				escritor.write(Integer.toString(planta.getDuracionStun()) + "," + Integer.toString(planta.getCantPlantas()));
+				
+				
+				break;
+			}
+			escritor.newLine();	
+			 
+		}
+		
+		escritor.close();
+	}catch (IOException E) {
+		
+	}	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static void mostrarHechizos(ArrayList<Hechizo> hechizosTotales) {
 		System.out.println("Mostrando todos los Hechizos : ");
 		for (Hechizo hechizo : hechizosTotales) {
@@ -200,7 +358,8 @@ public class Sistema {
 			} 
 			
 			escritor.close();
-		}catch (IOException E) {
+		}catch (IOException e) {
+			e.getMessage();
 			
 		}	
 	}
@@ -241,7 +400,7 @@ public class Sistema {
 	
 	public void menuAdministrador() {
 		sc.nextLine();
-		int opcionAdmin = 0;
+		int opcionAdmin = -3;
 		do {
 			System.out.println("0. Salir");
 			System.out.println("1. Agregar Mago");
@@ -261,9 +420,8 @@ public class Sistema {
 				System.out.println("Saliendo.......");
 				break;
 			case 1:
-				agregarMago(sc);
+				agregarMago();
 				guardarCambiosMagos();
-				opcionAdmin = -1;
 				break;
 				
 			case 2:
@@ -274,23 +432,22 @@ public class Sistema {
 			case 3:
 				eliminarMago(sc,magosTotales);
 				guardarCambiosMagos();
-				opcionAdmin = -1;
 				break;
 				
 			case 4:
-				
-				break;
+				agregarHechizo();
+				GuardarCambiosHechizos();
+				continue;
 				
 			case 5:
-				
+				System.out.println("lol");
 				break;
 				
 			case 6:
 				eliminarHechizo(sc,hechizosTotales);
-				opcionAdmin = -1;
 				break;
 			}
-		}while (opcionAdmin == -1);
+		}while (opcionAdmin != 0);
 		menu();
 	}
 	

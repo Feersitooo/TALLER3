@@ -1,4 +1,4 @@
-package taller3;
+package Dominio;
 
 import java.util.ArrayList;
 
@@ -27,6 +27,10 @@ public class Mago {
 
 	public ArrayList<Hechizo> getHechizos() {
 		return hechizos;
+	}
+
+	public void setHechizos(ArrayList<Hechizo> hechizos) {
+		this.hechizos = hechizos;
 	}
 	
 	

@@ -1,4 +1,4 @@
-package taller3;
+package Dominio;
 
 public class HechizoPlanta extends Hechizo {
 
@@ -8,6 +8,22 @@ public class HechizoPlanta extends Hechizo {
 	public HechizoPlanta(String nombreHechizo, String tipo, int daño, int duracionStun, int cantPlantas) {
 		super(nombreHechizo, tipo, daño);
 		this.duracionStun = duracionStun;
+		this.cantPlantas = cantPlantas;
+	}
+
+	public int getDuracionStun() {
+		return duracionStun;
+	}
+
+	public void setDuracionStun(int duracionStun) {
+		this.duracionStun = duracionStun;
+	}
+
+	public int getCantPlantas() {
+		return cantPlantas;
+	}
+
+	public void setCantPlantas(int cantPlantas) {
 		this.cantPlantas = cantPlantas;
 	}
 	

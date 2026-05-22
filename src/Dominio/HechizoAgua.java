@@ -1,4 +1,4 @@
-package taller3;
+package Dominio;
 
 public class HechizoAgua extends Hechizo {
 
@@ -9,6 +9,15 @@ public class HechizoAgua extends Hechizo {
 		super(nombreHechizo, tipo, daño);
 		this.cantidadHeal = cantidadHeal;
 		this.presionDelAgua = presionDelAgua;
+	}
+
+	public int getCantidadHeal() {
+		
+		return cantidadHeal;
+	}
+
+	public int getPresionDelAgua() {
+		return presionDelAgua;
 	}
 	
 	

@@ -1,4 +1,4 @@
-package taller3;
+package Dominio;
 
 public abstract class Hechizo {
 	
@@ -15,6 +15,14 @@ public abstract class Hechizo {
 
 	public String getNombreHechizo() {
 		return nombreHechizo;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public int getDaño() {
+		return daño;
 	}
 
 	@Override

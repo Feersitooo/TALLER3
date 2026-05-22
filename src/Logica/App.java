@@ -1,4 +1,6 @@
-package taller3;
+package Logica;
+
+import Dominio.*;
 
 public class App {
 
