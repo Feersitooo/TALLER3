@@ -21,6 +21,18 @@ public abstract class Hechizo {
 		return tipo;
 	}
 
+	public void setNombreHechizo(String nombreHechizo) {
+		this.nombreHechizo = nombreHechizo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public void setDaño(int daño) {
+		this.daño = daño;
+	}
+
 	public int getDaño() {
 		return daño;
 	}
