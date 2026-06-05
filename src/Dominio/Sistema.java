@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -194,6 +195,115 @@ public class Sistema {
 			
 		
 
+	}
+	
+	
+	
+	public static void HechizoListaPuntajes() {
+		for(int i = 0 ; i < hechizosTotales.size(); i++) {
+			int puntuacion = 0;
+			switch(hechizosTotales.get(i).getTipo()) {
+			case "fuego" :
+				HechizoFuego fuego = (HechizoFuego) hechizosTotales.get(i);
+			puntuacion= fuego.getDaño() * fuego.getDuracionQuemadura();
+				break;
+			case "agua" :
+				HechizoAgua agua = (HechizoAgua) hechizosTotales.get(i);
+				puntuacion = (agua.getDaño()+agua.getCantidadHeal()+agua.getPresionDelAgua())*2;
+				break;
+			case "tierra":
+				HechizoTierra tierra = (HechizoTierra) hechizosTotales.get(i);
+				puntuacion = (tierra.getDaño() +  tierra.getMejoraDefensa())/2;
+				
+				break;
+			case "planta":
+				HechizoPlanta planta = (HechizoPlanta) hechizosTotales.get(i);
+				puntuacion = planta.getDaño() + (planta.getDuracionStun() * planta.getCantPlantas());
+				break;
+			}
+			System.out.println( i+1+") "+ hechizosTotales.get(i).getNombreHechizo() + " Y su puntuacion es " + puntuacion);
+		}
+	}
+		
+	public static void Burbuja(ArrayList<Integer> puntaje, ArrayList<Hechizo> hechizosnomb) {
+		
+		int n = puntaje.size();
+		 for (int i = 0; i < n - 1; i++) {
+		        for (int j = 0; j < n - 1 - i; j++) {
+
+		            if (puntaje.get(j) < puntaje.get(j + 1)) {
+		            	int tmpNum = puntaje.get(j);
+		                puntaje.set(j,     puntaje.get(j + 1));
+		                puntaje.set(j + 1, tmpNum);
+		                
+		                Hechizo hechizostemp = hechizosnomb.get(j);
+		                hechizosnomb.set(j,hechizosnomb.get(j+1));
+		                hechizosnomb.set(j+1,hechizostemp);
+		            	
+		            	
+		                
+		            }
+		        }
+		    }
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+		
+		public static void HechizoListaTop10() {		
+			ArrayList<Integer> puntuacionesOrdenada = new ArrayList<>();
+			ArrayList<Hechizo> hechizosOrdenados = new ArrayList<>();
+		
+			for(int i = 0 ; i < hechizosTotales.size(); i++) {
+				int puntuacion = 0;
+				
+				switch(hechizosTotales.get(i).getTipo()) {
+				case "fuego" :
+					HechizoFuego fuego = (HechizoFuego) hechizosTotales.get(i);
+				puntuacion= fuego.getDaño() * fuego.getDuracionQuemadura();
+				puntuacionesOrdenada.add(puntuacion);
+				hechizosOrdenados.add(hechizosTotales.get(i));
+					break;
+				case "agua" :
+					HechizoAgua agua = (HechizoAgua) hechizosTotales.get(i);
+					puntuacion = (agua.getDaño()+agua.getCantidadHeal()+agua.getPresionDelAgua())*2;
+					puntuacionesOrdenada.add(puntuacion);
+					hechizosOrdenados.add(hechizosTotales.get(i));
+					break;
+				case "tierra":
+					HechizoTierra tierra = (HechizoTierra) hechizosTotales.get(i);
+					puntuacion = (tierra.getDaño() +  tierra.getMejoraDefensa())/2;
+					puntuacionesOrdenada.add(puntuacion);
+					hechizosOrdenados.add(hechizosTotales.get(i));
+					break;
+				case "planta":
+					HechizoPlanta planta = (HechizoPlanta) hechizosTotales.get(i);
+					puntuacion = planta.getDaño() + (planta.getDuracionStun() * planta.getCantPlantas());
+					puntuacionesOrdenada.add(puntuacion);
+					hechizosOrdenados.add(hechizosTotales.get(i));
+					break;
+			
+					
+				}
+			
+			
+			}
+			Burbuja(puntuacionesOrdenada,hechizosOrdenados);
+			for(int top10 = 0; top10 < 10 ; top10++) {
+				System.out.println(top10+1 + ")" + hechizosOrdenados.get(top10).getNombreHechizo() + " Puntuacion: " + puntuacionesOrdenada.get(top10));
+				 
+			}
+
+		
+		
+		
+		
 	}
 
 	public static void agregarMago() {
@@ -735,6 +845,7 @@ public class Sistema {
 			switch (opcionAnalista) {
 
 			case 1:
+				HechizoListaTop10();
 
 				break;
 
@@ -751,6 +862,7 @@ public class Sistema {
 				break;
 
 			case 5:
+				HechizoListaPuntajes();
 
 				break;
 
