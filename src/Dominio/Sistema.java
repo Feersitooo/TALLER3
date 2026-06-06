@@ -1,11 +1,13 @@
 package Dominio;
-
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+
+
 import java.io.BufferedWriter;
 import java.io.File;
 
@@ -15,16 +17,12 @@ public class Sistema {
 	public static ArrayList<Hechizo> hechizosTotales = new ArrayList<>();
 	public static ArrayList<Mago> magosTotales = new ArrayList<>();
 	private static ArrayList<String> tipos = new ArrayList<>();
-
-	public void controlErrorLetras(int opcion) {
-		try {
-			opcion = Integer.parseInt(sc.nextLine());
-
-		} catch (NumberFormatException e) {
-
-		}
-	}
-
+	
+	
+	
+	
+	
+	
 	public static void cargarHechizos(String rutaHechizos, ArrayList<Hechizo> hechizosTotales) {
 		try (Scanner sc1 = new Scanner(new File(rutaHechizos))) {
 			String linea;
@@ -119,23 +117,24 @@ public class Sistema {
 			switch (tiponuevo) {
 			case "agua":
 				hechizosTotales.remove(i);
+				int canthealnueva = -2 ;
+				do {
 				System.out.println("Ingrese cantidad de heal nueva: ");
-
-				int canthealnueva = sc.nextInt();
-				while (canthealnueva < 0) {
-					System.out.println("numero invalido intente denuevo...");
-					canthealnueva = sc.nextInt();
+				canthealnueva = sc.nextInt();
+				if(canthealnueva < 0) {
+					System.out.println("Ingrese un numero valido");
 				}
-				System.out.println("Ingrese presion del agua :");
-				int presionaguanueva = sc.nextInt();
-				while (canthealnueva < 0) {
-					System.out.println("numero invalido intente denuevo...");
-					canthealnueva = sc.nextInt();
-
-				}
-
+				}while(canthealnueva < 0 );
+				int presionagua = -2 ;
+				do {
+					System.out.println("Ingrese presion de agua nueva: ");
+					presionagua = sc.nextInt();
+					if( presionagua < 0 ) {
+						System.out.println("Ingrese una cantidad valida");
+					}
+				}while(presionagua < 0);
 				HechizoAgua aguanueva = new HechizoAgua(Nombrenuevo, tiponuevo, danonuevo, canthealnueva,
-						presionaguanueva);
+						presionagua);
 				hechizosTotales.add(aguanueva);
 				break;
 			case "fuego":
@@ -179,15 +178,13 @@ public class Sistema {
 				int cantplantasnueva = -9;
 				do {
 					System.out.println("Ingrese cantidad de plantas: ");
-					try {
-						cantplantasnueva = sc.nextInt();
-					} catch (NumberFormatException e) {
-						e.getMessage();
-					}
+					try {cantplantasnueva = sc.nextInt();} catch (InputMismatchException e) {System.out.println("Ingrese un numero..."); }
 					if (cantplantasnueva < 0) {
 						System.out.println("Numero invalido ingrese su numero denuevo: ");
 					}
-				} while (stunuevo < 0);
+				} while (cantplantasnueva < 0);
+				HechizoPlanta plantanueva = new HechizoPlanta(Nombrenuevo, tiponuevo, danonuevo,stunuevo, cantplantasnueva);
+				hechizosTotales.add(plantanueva);
 				break;
 
 			}
@@ -198,34 +195,7 @@ public class Sistema {
 	}
 	
 	
-	
-	public static void HechizoListaPuntajes() {
-		for(int i = 0 ; i < hechizosTotales.size(); i++) {
-			int puntuacion = 0;
-			switch(hechizosTotales.get(i).getTipo()) {
-			case "fuego" :
-				HechizoFuego fuego = (HechizoFuego) hechizosTotales.get(i);
-			puntuacion= fuego.getDaño() * fuego.getDuracionQuemadura();
-				break;
-			case "agua" :
-				HechizoAgua agua = (HechizoAgua) hechizosTotales.get(i);
-				puntuacion = (agua.getDaño()+agua.getCantidadHeal()+agua.getPresionDelAgua())*2;
-				break;
-			case "tierra":
-				HechizoTierra tierra = (HechizoTierra) hechizosTotales.get(i);
-				puntuacion = (tierra.getDaño() +  tierra.getMejoraDefensa())/2;
-				
-				break;
-			case "planta":
-				HechizoPlanta planta = (HechizoPlanta) hechizosTotales.get(i);
-				puntuacion = planta.getDaño() + (planta.getDuracionStun() * planta.getCantPlantas());
-				break;
-			}
-			System.out.println( i+1+") "+ hechizosTotales.get(i).getNombreHechizo() + " Y su puntuacion es " + puntuacion);
-		}
-	}
-		
-	public static void Burbuja(ArrayList<Integer> puntaje, ArrayList<Hechizo> hechizosnomb) {
+	public static void Burbuja(ArrayList<Integer> puntaje, ArrayList<Mago> magosTotales2, int bandera) {
 		
 		int n = puntaje.size();
 		 for (int i = 0; i < n - 1; i++) {
@@ -236,9 +206,9 @@ public class Sistema {
 		                puntaje.set(j,     puntaje.get(j + 1));
 		                puntaje.set(j + 1, tmpNum);
 		                
-		                Hechizo hechizostemp = hechizosnomb.get(j);
-		                hechizosnomb.set(j,hechizosnomb.get(j+1));
-		                hechizosnomb.set(j+1,hechizostemp);
+		                Mago hechizostemp = magosTotales2.get(j);
+		                magosTotales2.set(j,magosTotales2.get(j+1));
+		                magosTotales2.set(j+1,hechizostemp);
 		            	
 		            	
 		                
@@ -248,6 +218,89 @@ public class Sistema {
 		
 		
 		
+	}
+	
+	
+	
+	
+	
+	
+	
+
+		
+	public static void Burbuja(ArrayList<Integer> puntaje, ArrayList<Hechizo> magosTotales2, String bandera) {
+		
+		int n = puntaje.size();
+		 for (int i = 0; i < n - 1; i++) {
+		        for (int j = 0; j < n - 1 - i; j++) {
+
+		            if (puntaje.get(j) < puntaje.get(j + 1)) {
+		            	int tmpNum = puntaje.get(j);
+		                puntaje.set(j,     puntaje.get(j + 1));
+		                puntaje.set(j + 1, tmpNum);
+		                
+		                Hechizo hechizostemp = magosTotales2.get(j);
+		                magosTotales2.set(j,magosTotales2.get(j+1));
+		                magosTotales2.set(j+1,hechizostemp);
+		            	
+		            	
+		                
+		            }
+		        }
+		    }
+		
+		
+		
+	}
+	
+	
+	
+	
+	public static int HechizoListaPuntajes(ArrayList<Hechizo >hechizosTotales, int a) {
+		int suma = 0;
+		for(int i = 0 ; i < hechizosTotales.size(); i++) {
+			int puntuacion = 0;
+			
+			switch(hechizosTotales.get(i).getTipo()) {
+			
+			case "fuego" :
+				HechizoFuego fuego = (HechizoFuego) hechizosTotales.get(i);
+			puntuacion= fuego.getDaño() * fuego.getDuracionQuemadura();
+
+			
+				break;
+			case "agua" :
+				HechizoAgua agua = (HechizoAgua) hechizosTotales.get(i);
+				puntuacion = (agua.getDaño()+agua.getCantidadHeal()+agua.getPresionDelAgua())*2;
+
+				 
+				break;
+			case "tierra":
+				HechizoTierra tierra = (HechizoTierra) hechizosTotales.get(i);
+				puntuacion = (tierra.getDaño() +  tierra.getMejoraDefensa())/2;
+
+				 
+				break;
+			case "planta":
+				HechizoPlanta planta = (HechizoPlanta) hechizosTotales.get(i);
+				puntuacion = planta.getDaño() + (planta.getDuracionStun() * planta.getCantPlantas());
+
+				 
+				break;
+				
+			}
+			if(a == -1) {
+				System.out.println( i+1+") "+ hechizosTotales.get(i).getNombreHechizo() + " Y su puntuacion es " + puntuacion);
+				
+				}	
+			suma += puntuacion;
+		}
+
+		if(a == -2) { 
+			return suma;
+			
+		}
+		return 0;
 	}
 	
 	
@@ -294,7 +347,7 @@ public class Sistema {
 			
 			
 			}
-			Burbuja(puntuacionesOrdenada,hechizosOrdenados);
+			Burbuja(puntuacionesOrdenada,hechizosOrdenados,"1");
 			for(int top10 = 0; top10 < 10 ; top10++) {
 				System.out.println(top10+1 + ")" + hechizosOrdenados.get(top10).getNombreHechizo() + " Puntuacion: " + puntuacionesOrdenada.get(top10));
 				 
@@ -305,19 +358,484 @@ public class Sistema {
 		
 		
 	}
+		
+		
+		
+		
+		
+		
+		
+public static void mostrarHechizos(ArrayList<Hechizo> hechizosTotales) {
+			System.out.println("Mostrando todos los Hechizos : ");
+			for (Hechizo hechizo : hechizosTotales) {
+				System.out.println(hechizo);
+			}
+
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		private static void agregarHechizo() {
+			sc.nextLine();
+			String tipohechizo;
+			String hechizoNuevo;
+			int dano = 0 ;
+
+			System.out.println("Agregando nuevo hechizo");
+			do {
+				System.out.println("Ingrese nombre del hechizo o 0 para salir:");
+				hechizoNuevo = sc.nextLine();
+				if (hechizoNuevo.equals("0"))
+					break;
+
+				do {
+					if (hechizoNuevo.equals("0"))break;
+					
+					
+					System.out.println("Ingrese el tipo del hechizo o 0 para salir :");
+					tipohechizo = sc.nextLine();
+					if (tipohechizo.equals("0"))break;
+					
+					do {
+						if (hechizoNuevo.equals("0"))break;
+						if (tipohechizo.equals("0"))break;
+						
+						System.out.println("Ingrese el daño de el hechizo");
+						dano = sc.nextInt();
+						if (dano < -1) {
+							System.out.println("daño invalido intentar denuevo");
+						}
+					} while (dano < 0);
+
+					switch (tipohechizo.toLowerCase().strip()) {
+					case "agua":
+						int cantcuracion;
+						do {
+							System.out.println("Ingrese cantidad de curacion");
+							cantcuracion = sc.nextInt();
+						} while (cantcuracion < 0);
+						int presionDelAgua;
+						do {
+							System.out.println("Ingrese presion del agua");
+							presionDelAgua = sc.nextInt();
+						} while (presionDelAgua < 0);
+						HechizoAgua aguaNuevo = new HechizoAgua(hechizoNuevo, tipohechizo, dano, cantcuracion,
+								presionDelAgua);
+						hechizosTotales.add(aguaNuevo);
+						break;
+					case "tierra":
+						int mejoraDefensa;
+						do {
+							System.out.println("seleccione la defensa");
+							mejoraDefensa = sc.nextInt();
+						} while (mejoraDefensa < 0);
+						HechizoTierra tierraNuevo = new HechizoTierra(hechizoNuevo, tipohechizo, dano, mejoraDefensa);
+						hechizosTotales.add(tierraNuevo);
+						break;
+					case "planta":
+
+						int duracionStun;
+						do {
+							System.out.println("Ingrese cantidad de stun (segundos que durara)");
+							duracionStun = sc.nextInt();
+						} while (duracionStun < 0);
+						int cantPlantas = 0;
+						do {
+							System.out.println("Ingrese las plantas que invocara");
+							cantPlantas = sc.nextInt();
+						} while (cantPlantas < 0);
+						HechizoPlanta plantaNuevo = new HechizoPlanta(hechizoNuevo, tipohechizo, dano, duracionStun,
+								cantPlantas);
+						hechizosTotales.add(plantaNuevo);
+						break;
+					case "fuego":
+						int duracionQuemadura;
+						do {
+							System.out.println("Ingrese la duracion de la quemadura");
+							duracionQuemadura = sc.nextInt();
+						} while (duracionQuemadura < 0);
+						HechizoFuego fuego = new HechizoFuego(hechizoNuevo, tipohechizo, dano, duracionQuemadura);
+						hechizosTotales.add(fuego);
+						break;
+						
+					default:
+						System.out.println("ese tipo no existe trate denuevo");
+						sc.nextLine();
+						break;
+
+					}
+
+				} while (tipohechizo.equals("0"));
+
+			} while (hechizoNuevo.equals("0"));
+
+		}
+	
+		private static void ModificarHechizo() {
+
+			String Hechizomod ;
+			sc.nextLine();
+			do {
+				
+				System.out.println("Que hechizo desea modificar?(0 para salir)");
+				int indice = 1;
+				for (int j = 0; j < hechizosTotales.size(); j++) {
+
+					System.out.println(indice + ")" + hechizosTotales.get(j).getNombreHechizo());
+					indice++;
+				}
+
+				Hechizomod = sc.nextLine();
+				for (int i = 0; i < hechizosTotales.size(); i++) {
+					if (hechizosTotales.get(i).getNombreHechizo().toLowerCase().equals(Hechizomod.toLowerCase())) {
+						switch (hechizosTotales.get(i).getTipo().toLowerCase()) {
+
+						case "fuego":
+							HechizoFuego tipo = (HechizoFuego) hechizosTotales.get(i);
+							System.out.println("1)Nombre del Hechizo: " + tipo.getNombreHechizo());
+							System.out.println("2)Tipo del Hechizo: " + tipo.getTipo());
+							System.out.println("3)Daño: " + tipo.getDaño());
+							System.out.println("4)Duracion quemadura: " + tipo.getDuracionQuemadura());
+							System.out.println("5)Salir ");
+							System.out.println("¿Que desea cambiar?");
+
+							int opcionesCambio = sc.nextInt();
+							switch (opcionesCambio) {
+							case 1:
+								sc.nextLine();
+								String Nombrenuevo = sc.nextLine();
+								tipo.setNombreHechizo(Nombrenuevo);
+								break;
+							case 2:
+								CambiarTipo(i, tipo);
+								break;
+							case 3:
+								int danonuevo;
+								do {
+									System.out.println("Ingrese daño nuevo");
+									danonuevo = sc.nextInt();
+									
+									if(danonuevo < 0 ) {
+										System.out.println("Ingrese un numero valido");
+									}else {
+										tipo.setDaño(danonuevo);
+									}
+								}while(danonuevo < 0);
+									sc.nextLine();
+								break;
+							case 4:
+								int duracionQuemaduraN;
+								do {
+									System.out.println("Ingrese duracion quemadura");
+									 duracionQuemaduraN = sc.nextInt();
+									 if(duracionQuemaduraN<0) {
+										 System.out.println("Ingrese un valor valido");
+									 }
+								}while (duracionQuemaduraN < 0);
+								
+							
+									System.out.println("Ingrese un valor valido");
+								tipo.setDuracionQuemadura(duracionQuemaduraN);
+								break;
+							case 5:
+								System.out.println("Volviendo al menu...");
+								opcionesCambio = 0;
+
+								break;
+							default:
+								System.out.println("este no es un cambio valido");
+								continue;
+							}
+							break;
+						case "agua":
+							HechizoAgua tipo1 = (HechizoAgua) hechizosTotales.get(i);
+							System.out.println("1)Nombre del Hechizo: " + tipo1.getNombreHechizo());
+							System.out.println("2)Tipo del Hechizo: " + tipo1.getTipo());
+							System.out.println("3)Daño: " + tipo1.getDaño());
+							System.out.println("4)Cantidad Curacion: " + tipo1.getCantidadHeal());
+							System.out.println("5)Cantidad de presion de agua " + tipo1.getPresionDelAgua());
+							System.out.println("6)Salir ");
+							System.out.println("¿Que desea cambiar?");
+
+							 opcionesCambio = sc.nextInt();
+							switch (opcionesCambio) {
+							case 1:
+								String Nombrenuevo = sc.nextLine();
+								tipo1.setNombreHechizo(Nombrenuevo);
+								break;
+							case 2:
+								CambiarTipo(i, tipo1);
+								break;
+							case 3:
+								int danonuevo = sc.nextInt();
+								while (danonuevo <= 0) {
+									System.out.println("Ingrese un numero mayor a 0");
+									danonuevo = sc.nextInt();
+								}
+								tipo1.setDaño(danonuevo);
+								break;
+							case 4:
+								int Canthealnueva;
+								do { 
+									System.out.println("Ingrese cantidad de curacion nueva");
+									Canthealnueva = sc.nextInt();
+									if(Canthealnueva <0) {
+										System.out.println("Tu curacion no puede ser negativa");
+									}
+								}while(Canthealnueva <0) ;
+								
+								
+								tipo1.setCantidadHeal(Canthealnueva);
+								
+								break;
+							case 5:
+								int CantPresionNueva;
+								do {
+									System.out.println("ingrese cantidad de presion nueva");
+									CantPresionNueva = sc.nextInt();
+									if(CantPresionNueva < 0 ) {
+										System.out.println("Numero invalido intentelo denuevo");
+									}
+									
+								}while(CantPresionNueva <0);
+								tipo1.setPresionDelAgua(CantPresionNueva);
+								break;
+							case 6:
+								System.out.println("Volviendo al menu...");
+								opcionesCambio = 0;
+
+								break;
+							default:
+								System.out.println("este no es un cambio valido");
+								continue;
+							}
+
+
+						case "planta":
+							HechizoPlanta tipo2 = (HechizoPlanta) hechizosTotales.get(i);
+							System.out.println("1)Nombre del Hechizo: " + tipo2.getNombreHechizo());
+							System.out.println("2)Tipo del Hechizo: " + tipo2.getTipo());
+							System.out.println("3)Daño: " + tipo2.getDaño());
+							System.out.println("4)Cantidad de plantas: " + tipo2.getCantPlantas());
+							System.out.println("5)Salir ");
+							System.out.println("¿Que desea cambiar?");
+
+							int opcionesCambio2 = sc.nextInt();
+							switch (opcionesCambio2) {
+							case 1:
+								String Nombrenuevo = sc.nextLine();
+								tipo2.setNombreHechizo(Nombrenuevo);
+								break;
+							case 2:
+								CambiarTipo(i, tipo2);
+								break;
+							case 3:
+								int danonuevo;
+								do {
+									System.out.println("Ingrese daño nuevo");
+									danonuevo = sc.nextInt();
+									if(danonuevo < 0 ) {
+										System.out.println("Ingrese un numero valido");
+									}
+								}while(danonuevo < 0);
+								break;
+							case 4:
+								int CantPlantasN;
+								do {
+									System.out.println("Ingrese cantidad de plantas nueva");
+									CantPlantasN = sc.nextInt();
+									if(CantPlantasN < 0) {
+										System.out.println();
+										System.out.println("Esto no es un cambio valido, el numero no puede ser negativo");
+										System.out.println();
+									} else {
+										tipo2.setCantPlantas(CantPlantasN);
+									}
+									
+								}while(CantPlantasN< 0);
+								break;
+							case 5:
+								System.out.println("Volviendo al menu...");
+								opcionesCambio = 0;
+
+								break;
+							default:
+								System.out.println("este no es un cambio valido");
+								continue;
+							}
+							break;
+
+						case "tierra":
+
+						}
+
+					}
+
+				}
+
+			} while (!Hechizomod.equals("0"));
+		}
+
+		
+		
+		
+		
+		
+		
+		public static void eliminarHechizo(ArrayList<Hechizo> hechizosTotales) {
+			System.out.println("Que hechizo desea eliminar ? :");
+			int i = 1;
+			for (Hechizo hechizo : hechizosTotales) {
+				System.out.println(i + ")" + hechizo);
+				i++;
+			}
+			int eliminar = sc.nextInt();
+			System.out.println("hechizo " + hechizosTotales.get(eliminar - 1).getNombreHechizo() + " Eliminado...");
+			hechizosTotales.remove(eliminar - 1);
+
+		}
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		private static void GuardarCambiosHechizos() {
+			try {
+				BufferedWriter escritor = new BufferedWriter(new FileWriter("src/Hechizos.txt"));
+				for (int i = 0; i < hechizosTotales.size(); i++) {
+					escritor.write(hechizosTotales.get(i).getNombreHechizo() + ";" + hechizosTotales.get(i).getTipo() + ";"
+							+ Integer.toString(hechizosTotales.get(i).getDaño()) + ";");
+					String tipohechizo = hechizosTotales.get(i).getTipo();
+					switch (tipohechizo.toLowerCase()) {
+					case "fuego":
+						HechizoFuego fuego = (HechizoFuego) hechizosTotales.get(i);
+						escritor.write(Integer.toString(fuego.getDuracionQuemadura()));
+						break;
+					case "agua":
+						HechizoAgua agua = (HechizoAgua) hechizosTotales.get(i);
+						escritor.write(Integer.toString(agua.getCantidadHeal()) + ","
+								+ Integer.toString(agua.getPresionDelAgua()));
+						break;
+					case "tierra":
+						HechizoTierra tierra = (HechizoTierra) hechizosTotales.get(i);
+						escritor.write(Integer.toString(tierra.getMejoraDefensa()));
+
+						break;
+					case "planta":
+						HechizoPlanta planta = (HechizoPlanta) hechizosTotales.get(i);
+						escritor.write(Integer.toString(planta.getDuracionStun()) + ","
+								+ Integer.toString(planta.getCantPlantas()));
+
+						break;
+					}
+					escritor.newLine();
+
+				}
+
+				escritor.close();
+			} catch (IOException E) {
+
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 	public static void agregarMago() {
 		sc.nextLine();
 		System.out.println("Agregando nuevo mago....");
 		System.out.println("Ingrese nombre del mago :");
 		String nombreNuevoMago = sc.nextLine();
-		ArrayList<Hechizo> hechizosVacio = new ArrayList<>();
-		Mago magoNuevo = new Mago(nombreNuevoMago, hechizosVacio);
+		ArrayList<Hechizo> hechizosNuevo = new ArrayList<>();
+		int opcionHechizos = -10;
+		
+		do {
+			System.out.println("Cargando lista de hechizos");
+			for(int i = 0 ; i < hechizosTotales.size(); i++ ) {
+				System.out.println(i+1 + ")" +hechizosTotales.get(i));
+			}
+			System.out.println("Que hechizo desea agregar ?");
+			opcionHechizos = sc.nextInt();
+			if(opcionHechizos > 0 && opcionHechizos < hechizosTotales.size()) {
+			hechizosNuevo.add(hechizosTotales.get(opcionHechizos-1));
+			}else if(opcionHechizos == 0 ) {
+				System.out.println("Saliendo...");
+				
+			}else {
+				System.out.println("Ingrese un numero valido!!");
+			}
+			
+			
+		}while(opcionHechizos != 0);
+		
+		
+		
+		
+		Mago magoNuevo = new Mago(nombreNuevoMago, hechizosNuevo);
+		
+		
+		
 		magosTotales.add(magoNuevo);
-		// se debe agregar un mago sin ningun hechizo ??
+
 	}
 
-	public static void modificarMago(Scanner sc, ArrayList<Mago> magosTotales) {
+	public static void modificarMago() {
 
 		System.out.println("Que mago desea modificar ?");
 		int i = 1;
@@ -325,6 +843,7 @@ public class Sistema {
 			System.out.println(i + ") " + mago);
 			i++;
 		}
+		int magomodificar = sc.nextInt();
 
 		System.out.println("Que deseas modificar del mago " + magosTotales.get(i - 1).getNombre());
 		System.out.println("1) Nombre");
@@ -337,7 +856,7 @@ public class Sistema {
 		case 1:
 			System.out.println("Ingresa nuevo nombre :");
 			String nuevoNombre = sc.nextLine();
-			magosTotales.get(i - 1).setNombre(nuevoNombre);
+			magosTotales.get(magomodificar - 1).setNombre(nuevoNombre);
 			break;
 
 		case 2:
@@ -363,343 +882,11 @@ public class Sistema {
 	}
 
 
-	public static void agregarHechizo() {
-		sc.nextLine();
-		String tipohechizo;
-		String hechizoNuevo;
-		int dano = 0 ;
-
-		System.out.println("Agregando nuevo hechizo");
-		do {
-			System.out.println("Ingrese nombre del hechizo o 0 para salir:");
-			hechizoNuevo = sc.nextLine();
-			if (hechizoNuevo.equals("0"))
-				break;
-
-			do {
-				if (hechizoNuevo.equals("0"))break;
-				
-				
-				System.out.println("Ingrese el tipo del hechizo o 0 para salir :");
-				tipohechizo = sc.nextLine();
-				if (tipohechizo.equals("0"))break;
-				
-				do {
-					if (hechizoNuevo.equals("0"))break;
-					if (tipohechizo.equals("0"))break;
-					
-					System.out.println("Ingrese el daño de el hechizo");
-					dano = sc.nextInt();
-					if (dano < -1) {
-						System.out.println("daño invalido intentar denuevo");
-					}
-				} while (dano < 0);
-
-				switch (tipohechizo.toLowerCase().strip()) {
-				case "agua":
-					int cantcuracion;
-					do {
-						System.out.println("Ingrese cantidad de curacion");
-						cantcuracion = sc.nextInt();
-					} while (cantcuracion < 0);
-					int presionDelAgua;
-					do {
-						System.out.println("Ingrese presion del agua");
-						presionDelAgua = sc.nextInt();
-					} while (presionDelAgua < 0);
-					HechizoAgua aguaNuevo = new HechizoAgua(hechizoNuevo, tipohechizo, dano, cantcuracion,
-							presionDelAgua);
-					hechizosTotales.add(aguaNuevo);
-					break;
-				case "tierra":
-					int mejoraDefensa;
-					do {
-						System.out.println("seleccione la defensa");
-						mejoraDefensa = sc.nextInt();
-					} while (mejoraDefensa < 0);
-					HechizoTierra tierraNuevo = new HechizoTierra(hechizoNuevo, tipohechizo, dano, mejoraDefensa);
-					hechizosTotales.add(tierraNuevo);
-					break;
-				case "planta":
-
-					int duracionStun;
-					do {
-						System.out.println("Ingrese cantidad de stun (segundos que durara)");
-						duracionStun = sc.nextInt();
-					} while (duracionStun < 0);
-					int cantPlantas = 0;
-					do {
-						System.out.println("Ingrese las plantas que invocara");
-						cantPlantas = sc.nextInt();
-					} while (cantPlantas < 0);
-					HechizoPlanta plantaNuevo = new HechizoPlanta(hechizoNuevo, tipohechizo, dano, duracionStun,
-							cantPlantas);
-					hechizosTotales.add(plantaNuevo);
-					break;
-				case "fuego":
-					int duracionQuemadura;
-					do {
-						System.out.println("Ingrese la duracion de la quemadura");
-						duracionQuemadura = sc.nextInt();
-					} while (duracionQuemadura < 0);
-					HechizoFuego fuego = new HechizoFuego(hechizoNuevo, tipohechizo, dano, duracionQuemadura);
-					hechizosTotales.add(fuego);
-					
-				default:
-					System.out.println("ese tipo no existe trate denuevo");
-					sc.nextLine();
-					break;
-
-				}
-
-			} while (tipohechizo.equals("0"));
-
-		} while (hechizoNuevo.equals("0"));
-
-	}
-
-	private static void GuardarCambiosHechizos() {
-		try {
-			BufferedWriter escritor = new BufferedWriter(new FileWriter("src/Hechizos.txt"));
-			for (int i = 0; i < hechizosTotales.size(); i++) {
-				escritor.write(hechizosTotales.get(i).getNombreHechizo() + ";" + hechizosTotales.get(i).getTipo() + ";"
-						+ Integer.toString(hechizosTotales.get(i).getDaño()) + ";");
-				String tipohechizo = hechizosTotales.get(i).getTipo();
-				switch (tipohechizo.toLowerCase()) {
-				case "fuego":
-					HechizoFuego fuego = (HechizoFuego) hechizosTotales.get(i);
-					escritor.write(Integer.toString(fuego.getDuracionQuemadura()));
-					break;
-				case "agua":
-					HechizoAgua agua = (HechizoAgua) hechizosTotales.get(i);
-					escritor.write(Integer.toString(agua.getCantidadHeal()) + ","
-							+ Integer.toString(agua.getPresionDelAgua()));
-					break;
-				case "tierra":
-					HechizoTierra tierra = (HechizoTierra) hechizosTotales.get(i);
-					escritor.write(Integer.toString(tierra.getMejoraDefensa()));
-
-					break;
-				case "planta":
-					HechizoPlanta planta = (HechizoPlanta) hechizosTotales.get(i);
-					escritor.write(Integer.toString(planta.getDuracionStun()) + ","
-							+ Integer.toString(planta.getCantPlantas()));
-
-					break;
-				}
-				escritor.newLine();
-
-			}
-
-			escritor.close();
-		} catch (IOException E) {
-
-		}
-	}
-
-	private static void ModificarHechizo() {
-
-		String Hechizomod ;
-		sc.nextLine();
-		do {
-			
-			System.out.println("Que hechizo desea modificar?(0 para salir)");
-			int indice = 1;
-			for (int j = 0; j < hechizosTotales.size(); j++) {
-
-				System.out.println(indice + ")" + hechizosTotales.get(j).getNombreHechizo());
-				indice++;
-			}
-
-			Hechizomod = sc.nextLine();
-			for (int i = 0; i < hechizosTotales.size(); i++) {
-				if (hechizosTotales.get(i).getNombreHechizo().equals(Hechizomod)) {
-					switch (hechizosTotales.get(i).getTipo().toLowerCase()) {
-
-					case "fuego":
-						HechizoFuego tipo = (HechizoFuego) hechizosTotales.get(i);
-						System.out.println("1)Nombre del Hechizo: " + tipo.getNombreHechizo());
-						System.out.println("2)Tipo del Hechizo: " + tipo.getTipo());
-						System.out.println("3)Daño: " + tipo.getDaño());
-						System.out.println("4)Duracion quemadura: " + tipo.getDuracionQuemadura());
-						System.out.println("5)Salir ");
-						System.out.println("¿Que desea cambiar?");
-
-						int opcionesCambio = sc.nextInt();
-						switch (opcionesCambio) {
-						case 1:
-							String Nombrenuevo = sc.nextLine();
-							tipo.setNombreHechizo(Nombrenuevo);
-							break;
-						case 2:
-							CambiarTipo(i, tipo);
-							break;
-						case 3:
-							int danonuevo;
-							do {
-								System.out.println("Ingrese daño nuevo");
-								danonuevo = sc.nextInt();
-								if(danonuevo < 0 ) {
-									System.out.println("Ingrese un numero valido");
-								}
-							}while(danonuevo < 0);
-							break;
-						case 4:
-							int duracionQuemaduraN;
-							do {
-								System.out.println("Ingrese duracion quemadura");
-								 duracionQuemaduraN = sc.nextInt();
-								 if(duracionQuemaduraN<0) {
-									 System.out.println("Ingrese un valor valido");
-								 }
-							}while (duracionQuemaduraN < 0);
-							
-						
-								System.out.println("Ingrese un valor valido");
-							tipo.setDuracionQuemadura(duracionQuemaduraN);
-							break;
-						case 5:
-							System.out.println("Volviendo al menu...");
-							opcionesCambio = 0;
-
-							break;
-						default:
-							System.out.println("este no es un cambio valido");
-							continue;
-						}
-						break;
-					case "agua":
-						HechizoAgua tipo1 = (HechizoAgua) hechizosTotales.get(i);
-						System.out.println("1)Nombre del Hechizo: " + tipo1.getNombreHechizo());
-						System.out.println("2)Tipo del Hechizo: " + tipo1.getTipo());
-						System.out.println("3)Daño: " + tipo1.getDaño());
-						System.out.println("4)Cantidad Curacion: " + tipo1.getCantidadHeal());
-						System.out.println("5)Cantidad de presion de agua " + tipo1.getPresionDelAgua());
-						System.out.println("6)Salir ");
-						System.out.println("¿Que desea cambiar?");
-
-						 opcionesCambio = sc.nextInt();
-						switch (opcionesCambio) {
-						case 1:
-							String Nombrenuevo = sc.nextLine();
-							tipo1.setNombreHechizo(Nombrenuevo);
-							break;
-						case 2:
-							CambiarTipo(i, tipo1);
-						case 3:
-							int danonuevo = sc.nextInt();
-							while (danonuevo <= 0) {
-								System.out.println("Ingrese un numero mayor a 0");
-								danonuevo = sc.nextInt();
-							}
-							tipo1.setDaño(danonuevo);
-							break;
-						case 4:
-							int Canthealnueva;
-							do { 
-								System.out.println("Ingrese cantidad de curacion nueva");
-								Canthealnueva = sc.nextInt();
-								if(Canthealnueva <0) {
-									System.out.println("Tu curacion no puede ser negativa");
-								}
-							}while(Canthealnueva <0) ;
-							
-							
-							tipo1.setCantidadHeal(Canthealnueva);
-							
-							break;
-						case 5:
-							int CantPresionNueva;
-							do {
-								System.out.println("ingrese cantidad de presion nueva");
-								CantPresionNueva = sc.nextInt();
-								if(CantPresionNueva < 0 ) {
-									System.out.println("Numero invalido intentelo denuevo");
-								}
-								
-							}while(CantPresionNueva <0);
-							tipo1.setPresionDelAgua(CantPresionNueva);
-							break;
-						case 6:
-							System.out.println("Volviendo al menu...");
-							opcionesCambio = 0;
-
-							break;
-						default:
-							System.out.println("este no es un cambio valido");
-							continue;
-						}
 
 
-					case "planta":
-						HechizoPlanta tipo2 = (HechizoPlanta) hechizosTotales.get(i);
-						System.out.println("1)Nombre del Hechizo: " + tipo2.getNombreHechizo());
-						System.out.println("2)Tipo del Hechizo: " + tipo2.getTipo());
-						System.out.println("3)Daño: " + tipo2.getDaño());
-						System.out.println("4)Cantidad de plantas: " + tipo2.getCantPlantas());
-						System.out.println("5)Salir ");
-						System.out.println("¿Que desea cambiar?");
 
-						int opcionesCambio2 = sc.nextInt();
-						switch (opcionesCambio2) {
-						case 1:
-							String Nombrenuevo = sc.nextLine();
-							tipo2.setNombreHechizo(Nombrenuevo);
-							break;
-						case 2:
-							CambiarTipo(i, tipo2);
-							break;
-						case 3:
-							int danonuevo;
-							do {
-								System.out.println("Ingrese daño nuevo");
-								danonuevo = sc.nextInt();
-								if(danonuevo < 0 ) {
-									System.out.println("Ingrese un numero valido");
-								}
-							}while(danonuevo < 0);
-							break;
-						case 4:
-							int CantPlantasN;
-							do {
-								System.out.println("Ingrese cantidad de plantas nueva");
-								CantPlantasN = sc.nextInt();
-								if(CantPlantasN < 0) {
-									System.out.println();
-									System.out.println("Esto no es un cambio valido, el numero no puede ser negativo");
-									System.out.println();
-								}
-								tipo2.setCantPlantas(CantPlantasN);
-							}while(CantPlantasN< 0);
-						case 5:
-							System.out.println("Volviendo al menu...");
-							opcionesCambio = 0;
 
-							break;
-						default:
-							System.out.println("este no es un cambio valido");
-							continue;
-						}
-						break;
 
-					case "tierra":
-
-					}
-
-				}
-
-			}
-
-		} while (!Hechizomod.equals("0"));
-	}
-
-	public static void mostrarHechizos(ArrayList<Hechizo> hechizosTotales) {
-		System.out.println("Mostrando todos los Hechizos : ");
-		for (Hechizo hechizo : hechizosTotales) {
-			System.out.println(hechizo);
-		}
-
-	}
 
 	public static void mostrarMagos(ArrayList<Mago> magosTotales) {
 		System.out.println("Mostrando todos los Magos : ");
@@ -708,18 +895,7 @@ public class Sistema {
 		}
 	}
 
-	public static void eliminarHechizo(ArrayList<Hechizo> hechizosTotales) {
-		System.out.println("Que hechizo desea eliminar ? :");
-		int i = 1;
-		for (Hechizo hechizo : hechizosTotales) {
-			System.out.println(i + ")" + hechizo);
-			i++;
-		}
-		int eliminar = sc.nextInt();
-		System.out.println("hechizo " + hechizosTotales.get(eliminar - 1).getNombreHechizo() + " Eliminado...");
-		hechizosTotales.remove(eliminar - 1);
 
-	}
 
 	public static void guardarCambiosMagos() {
 
@@ -740,10 +916,65 @@ public class Sistema {
 			escritor.close();
 		} catch (IOException e) {
 			e.getMessage();
+			}
+	}
+	
+	
+	
+	
+	
+	
+	public void MagosTop10() {
+		ArrayList<Integer> puntajesMago = new ArrayList<>();
+		for(int i = 0; i < magosTotales.size(); i++) {
+			 ArrayList<Hechizo> hechizosmago = magosTotales.get(i).getHechizos();
+			 
+
+			 int puntajemago = HechizoListaPuntajes(hechizosmago, -2);
+			 puntajesMago.add(puntajemago);
 
 		}
+		Burbuja(puntajesMago,magosTotales,1);
+		int puntuaciones = 0;
+		for(int j =0 ; j <  magosTotales.size() && j < 3; j++ ) {
+			 System.out.println(j+1 + ") MAGO:" + magosTotales.get(j).getNombre() + " y su puntuacion fue de " + puntajesMago.get(j));
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
+		
+	
+	public void MagosPuntuacion() {
+		ArrayList<Integer> puntajesMago = new ArrayList<>();
+		for(int i = 0; i < magosTotales.size(); i++) {
+			 ArrayList<Hechizo> hechizosmago = magosTotales.get(i).getHechizos();
+			 
+
+			 int puntajemago = HechizoListaPuntajes(hechizosmago, -2);
+			 puntajesMago.add(puntajemago);
+
+		}
+		Burbuja(puntajesMago,magosTotales,1);
+		int puntuaciones = 0;
+		for(Mago a : magosTotales) {
+			
+			System.out.println("Puntuaciones " + puntajesMago.get(puntuaciones) + " MAGO " + a.getNombre());
+			puntuaciones++;
+		}
+		
+	}
+
+	
 	public void menu() {
 
 		String rutaHechizos = "src/Hechizos.txt";
@@ -753,13 +984,14 @@ public class Sistema {
 
 		cargarHechizos(rutaHechizos, hechizosTotales);
 		cargarMagos(rutaMagos, hechizosTotales);
-
+		int opcion1 = -2;
+		do {
 		System.out.println("----Menu----");
-		System.out.println("1) Administrador");
-		System.out.println("2) Analista");
-		int opcion1 = 0;
+		System.out.println("0. Cerrar Programa");
+		System.out.println("1. Administrador");
+		System.out.println("2. Analista");
 
-		// controlErrorLetras(opcion1);
+
 		opcion1 = sc.nextInt();
 
 		switch (opcion1) {
@@ -770,8 +1002,9 @@ public class Sistema {
 		case 2:
 			menuAnalista();
 			break;
-
 		}
+		}while(opcion1 != 0);
+		System.out.println("Saliendo...");
 
 	}
 
@@ -787,7 +1020,6 @@ public class Sistema {
 			System.out.println("5. Modificar Hechizo");
 			System.out.println("6. Eliminar Hechizo");
 
-			// controlErrorLetras(opcionAdmin);
 
 			opcionAdmin = sc.nextInt();
 			switch (opcionAdmin) {
@@ -817,6 +1049,7 @@ public class Sistema {
 
 			case 5:
 				ModificarHechizo();
+				GuardarCambiosHechizos();
 
 				break;
 
@@ -828,11 +1061,13 @@ public class Sistema {
 		} while (opcionAdmin != 0);
 		menu();
 	}
+	
 
 	public void menuAnalista() {
-		int opcionAnalista = 0;
+		int opcionAnalista = -1;
 		do {
 			System.out.println();
+			System.out.println("0. Salir al menu");
 			System.out.println("1. Top 10 Mejores Hechizos");
 			System.out.println("2. Top 3 Mejores Magos");
 			System.out.println("3. Mostrar todos los Hechizos");
@@ -848,8 +1083,10 @@ public class Sistema {
 				HechizoListaTop10();
 
 				break;
+				
 
 			case 2:
+				MagosTop10();
 
 				break;
 
@@ -862,17 +1099,19 @@ public class Sistema {
 				break;
 
 			case 5:
-				HechizoListaPuntajes();
+				HechizoListaPuntajes(hechizosTotales, -1);
 
 				break;
 
 			case 6:
+				MagosPuntuacion();
 
 				break;
 
 			}
 
 		} while (opcionAnalista != 0);
+		menu();
 	}
 
 }
