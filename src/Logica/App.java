@@ -14,7 +14,7 @@ import Dominio.*;
 
 public class App {
 	public static Scanner sc = new Scanner(System.in);
-	public static SistemaImp sistema = new SistemaImp();
+	public static SistemaIMP sistema = new SistemaIMP();
 	public static String rutaHechizos = "src/Hechizos.txt"; 
 	public static String rutaMagos = "src/Magos.txt";
 	
