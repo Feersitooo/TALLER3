@@ -1,5 +1,8 @@
 package Logica;
 
+//Joan Zambra 21.886.975-0 ICCI
+//Fernando Herrera 22.057.550-0 ICCI
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,6 +18,9 @@ public class App {
 	public static String rutaHechizos = "src/Hechizos.txt"; 
 	public static String rutaMagos = "src/Magos.txt";
 	
+	
+//	Menu administrador
+//	contiene metodos para agregar, modificar y eliminar hechizos/magos y guardar cambios	
 	public static void menuAdministrador() {
 		sc.nextLine();
 		int opcionAdmin = -10;
@@ -77,6 +83,8 @@ public class App {
 		menu();
 	}
 	
+//	Menu principal del programa
+//	es el primero que se despliega deriva al menu administrador o analista
 	public static void menu() {
 		sistema.hechizosTotales.clear();
 		sistema.magosTotales.clear();
@@ -108,6 +116,8 @@ public class App {
 
 	}
 	
+//	Menu analista
+//	contiene metodos como top 10 de magos o hechizos, mostrar hechizos o magos y puntuaciones
 	public static void menuAnalista() {
 		int opcionAnalista = -10;
 		do {
@@ -128,39 +138,29 @@ public class App {
 
 			case 1:
 				sistema.HechizoListaTop10();
-
 				break;
-				
-
 			case 2:
 				sistema.MagosTop10();
-
 				break;
-
 			case 3:
 				sistema.mostrarHechizos(sistema.getHechizosTotales());
 				break;
-
 			case 4:
 				sistema.mostrarMagos(sistema.getMagosTotales());
 				break;
-
 			case 5:
 				sistema.HechizoListaPuntajes(sistema.getHechizosTotales(), -1);
-
 				break;
-
 			case 6:
 				sistema.MagosPuntuacion();
-
 				break;
-
 			}
-
 		} while (opcionAnalista != 0);
 		menu();
 	}
 	
+//  Cargar hechizos
+//	carga los hechizos desde el archivo "hechizos.txt" crea un hechizo segun la linea y lo manda al sistema para agregarlo
 	public static void cargarHechizos(String rutaHechizos) {
 		try (Scanner sc1 = new Scanner(new File(rutaHechizos))) {
 			String linea;
@@ -214,6 +214,8 @@ public class App {
 
 	}
 	
+// Cargar magos
+// carga los magos desde el archivo "Magos.txt" crea un mago segun la linea y lo manda al sistema para agregarlo
 	public static void cargarMagos(String rutaMagos) {
 			try (Scanner sc1 = new Scanner(new File(rutaMagos))) {
 				String linea;
@@ -241,6 +243,8 @@ public class App {
 		
 	}
 
+//	Cambiar tipo
+// 	cambia el tipo de hechizo y le pide sus nuevos atributos especiales segun el tipo elejido
 	public static void CambiarTipo(int i, Hechizo fuego) {
 		sc.nextLine();
 		String Nombrenuevo = sistema.getHechizosTotales().get(i).getNombreHechizo();
@@ -300,10 +304,8 @@ public class App {
 				for(int indicemagosremplazarHechizos = 0 ; indicemagosremplazarHechizos < MagosConHechizoeliminado.size(); indicemagosremplazarHechizos++) {
 					for(int Indicemago= 0; Indicemago< sistema.magosTotales.size(); Indicemago++) {
 						if(MagosConHechizoeliminado.get(indicemagosremplazarHechizos).equals(sistema.magosTotales.get(Indicemago))) {
-							sistema.magosTotales.get(Indicemago).getHechizos().add(aguanueva);
-							
-						}
-						
+							sistema.magosTotales.get(Indicemago).getHechizos().add(aguanueva);							
+						}			
 					}
 				}
 				break;
@@ -324,18 +326,12 @@ public class App {
 				for(int indicemagosremplazarHechizos = 0 ; indicemagosremplazarHechizos < MagosConHechizoeliminado.size(); indicemagosremplazarHechizos++) {
 					for(int Indicemago= 0; Indicemago< sistema.magosTotales.size(); Indicemago++) {
 						if(MagosConHechizoeliminado.get(indicemagosremplazarHechizos).equals(sistema.magosTotales.get(Indicemago))) {
-							sistema.magosTotales.get(Indicemago).getHechizos().add(fuegonuevo);
-							
-						}
-						
+							sistema.magosTotales.get(Indicemago).getHechizos().add(fuegonuevo);					
+						}						
 					}
 				}
-
 				break;
-
-			case "tierra":
-				
-				
+			case "tierra":				
 				int defensanueva;
 				do {
 					System.out.println("Ingrese cantidad de defensa: ");
@@ -350,13 +346,10 @@ public class App {
 				for(int indicemagosremplazarHechizos = 0 ; indicemagosremplazarHechizos < MagosConHechizoeliminado.size(); indicemagosremplazarHechizos++) {
 					for(int Indicemago= 0; Indicemago< sistema.magosTotales.size(); Indicemago++) {
 						if(MagosConHechizoeliminado.get(indicemagosremplazarHechizos).equals(sistema.magosTotales.get(Indicemago))) {
-							sistema.magosTotales.get(Indicemago).getHechizos().add(tierranueva);
-							
-						}
-						
+							sistema.magosTotales.get(Indicemago).getHechizos().add(tierranueva);						
+						}					
 					}
 				}
-
 				break;
 			case "planta":
 				int stunuevo = -10;
@@ -382,19 +375,17 @@ public class App {
 				for(int indicemagosremplazarHechizos = 0 ; indicemagosremplazarHechizos < MagosConHechizoeliminado.size(); indicemagosremplazarHechizos++) {
 					for(int Indicemago= 0; Indicemago< sistema.magosTotales.size(); Indicemago++) {
 						if(MagosConHechizoeliminado.get(indicemagosremplazarHechizos).equals(sistema.magosTotales.get(Indicemago))) {
-							sistema.magosTotales.get(Indicemago).getHechizos().add(plantanueva);
-							
-						}
-						
+							sistema.magosTotales.get(Indicemago).getHechizos().add(plantanueva);						
+						}					
 					}
 				}
-				
 				break;
-
 			}
 		}
 	}
 
+//	Eliminar echizo
+//  pregunta por un hechizo para luego eliminarlo
 	public static void eliminarHechizo() {
 		int eliminar = 10;
 		do {
@@ -414,16 +405,14 @@ public class App {
 		}while(eliminar != 0);
 	}
 	
+//	Eliminar mago
+//	pregunta por un mago para luego eliminarlo
 	public static void eliminarMago() {
 		System.out.println("Que mago desea eliminar ? :");
-		
-		
 		int eliminar = -10;
-
 		do {
 			int i = 1;
-			
-			
+		
 			for (Mago mago : sistema.getMagosTotales()) {
 				System.out.println(i + ")" + mago);
 				i++;
@@ -447,6 +436,8 @@ public class App {
 		}while(eliminar != 0);
 	}
 	
+// 	Modificar mago
+//	pregunta por un mago para modificar y da al usuario a elejir entre modificar su nombre o sus hechizos
 	public static void modificarMago() {
 		int magomodificar = -10;
 		do {
@@ -590,7 +581,9 @@ public class App {
 
 	}while(magomodificar != 0 );
 	}
-	
+
+//	Agregar mago
+//	crear un nuevo mago, pregunta por el nombre del nuevo mago y por los hechizos que tendra
 	public static void agregarMago() {
 		
 		sc.nextLine();
@@ -659,6 +652,8 @@ public class App {
 		sistema.agregarMagos(magoNuevo);
 	}
 
+//	Modificar hechizo
+//	pregunta por un hechizo para modificar sus parametros
 	public static void ModificarHechizo() {
 
 		String Hechizomod ;
@@ -1003,6 +998,8 @@ public class App {
 		} while (!Hechizomod.equals("0"));
 	}
 	
+//	Agregar hechizo
+//	pregunta por el nombre de un nuevo hechizo, que tipo y sus parametros generales y especiales
 	public static void agregarHechizo() {
 		sc.nextLine();
 		String tipohechizo;
@@ -1119,6 +1116,8 @@ public class App {
 		} while (agregarOtro);
 	}
 	
+// 	Guardar cambios hechizos
+//	guarda los cambios que hay en el arraylist de hechizos que se encuentra en el sistema y los escribe en "Hechizos.txt"
 	public static void GuardarCambiosHechizos() {
 		try {
 			BufferedWriter escritor = new BufferedWriter(new FileWriter("src/Hechizos.txt"));
@@ -1158,6 +1157,8 @@ public class App {
 		}
 	}
 	
+//	Guardar cambios magos
+//	guarda los cambios que hay en el arraylist de magos que se encuentra en el sistema y los escribe en "Magos.txt"
 	public static void guardarCambiosMagos() {
 
 		try {
@@ -1180,6 +1181,8 @@ public class App {
 			}
 	}
 	
+// 	main
+//	llama a cargar los magos y hechizos para tenerlos actualizados y luego al menu principal
 	public static void main(String[] args) {
 		cargarHechizos(rutaHechizos);
 		cargarMagos(rutaMagos);
