@@ -1,10 +1,13 @@
-package Dominio;
+package Logica;
 
 import java.util.ArrayList;
 
 
+import Dominio.*;
 
-public class Sistema {
+
+
+public class SistemaImp implements Sistema {
 
 	public  ArrayList<Hechizo> hechizosTotales = new ArrayList<>();
 	public  ArrayList<Mago> magosTotales = new ArrayList<>();
@@ -61,7 +64,7 @@ public class Sistema {
 		
 	}
 		
-	public void Burbuja(ArrayList<Integer> puntaje, ArrayList<Hechizo> magosTotales2, String bandera) {
+	public void Burbuja1(ArrayList<Integer> puntaje, ArrayList<Hechizo> magosTotales2, String bandera) {
 		
 		int n = puntaje.size();
 		 for (int i = 0; i < n - 1; i++) {
@@ -171,7 +174,7 @@ public class Sistema {
 		
 		
 		}
-		Burbuja(puntuacionesOrdenada,hechizosOrdenados,"1");
+		Burbuja1(puntuacionesOrdenada,hechizosOrdenados,"1");
 		for(int top10 = 0; top10 < 10 ; top10++) {
 			System.out.println(top10+1 + ")" + hechizosOrdenados.get(top10).getNombreHechizo() + " Puntuacion: " + puntuacionesOrdenada.get(top10));
 			 
@@ -252,6 +255,7 @@ public class Sistema {
 		}
 		
 	}
+
 
 
 }
