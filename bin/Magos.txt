@@ -1,11 +1,11 @@
-Ferran;Salmuera|Envite Igneo|Disparo Lodo|Poder Pasado|Rueda Fuego|Hidroariete|Burbuja
-Sasa;Infierno|Martillazo|Hidroariete|Envite Igneo
+Ferran;Salmuera|Disparo Lodo|Poder Pasado|Rueda Fuego|Hidroariete|Burbuja
+Sasa;Infierno|Martillazo|Hidroariete
 Mul;Gigadrenado|Rayo Burbuja|Danza Lluvia|Pistola Agua
 Branco;Arraigo|Silvato|Danza Lluvia
 MartinNegro;Acua Aro|Tumba Rocas|Polen Somnífero|Escaldar|Disparo Lodo|Cascada|Pirotecnia
 EmaArdillaRabiosa;Origen Pulso|Fuego Sagrado|Cascada|Llamarada Azul
-Danini;Fuego Sagrado|Pedrada|Envite Igneo|Hierba Lazo|Surf
-Maxi;Explosión Ígnea|Envite Igneo|Agua Lodosa
+Danini;Fuego Sagrado|Pedrada|Hierba Lazo|Surf
+Maxi;Explosión Ígnea|Agua Lodosa
 MartinAyudanteHermoso;Disparo Lodo|Salmuera|Colmillo Igneo|Excavar|Calcinación
 Estefania;Hoja Afilada|Burbuja|Acua Jet|Energibola|Fuego Sagrado|Agua Lodosa|Llamarada Azul
 Churrasquita;Origen Pulso|Infierno|Silvato|Hoja Mágica|Colmillo Igneo

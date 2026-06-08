@@ -1,12 +1,11 @@
 package Dominio;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 
 public class Sistema {
 
-	public  Scanner sc = new Scanner(System.in);
 	public  ArrayList<Hechizo> hechizosTotales = new ArrayList<>();
 	public  ArrayList<Mago> magosTotales = new ArrayList<>();
 	public  ArrayList<String> tipos = new ArrayList<>();
@@ -108,7 +107,7 @@ public class Sistema {
 				break;
 			case "tierra":
 				HechizoTierra tierra = (HechizoTierra) hechizosTotales.get(i);
-				puntuacion = (tierra.getDaño() +  tierra.getMejoraDefensa())/2;
+				puntuacion = (tierra.getDaño() * tierra.getMejoraDefensa())/2;
 
 				 
 				break;
@@ -156,7 +155,7 @@ public class Sistema {
 				break;
 			case "tierra":
 				HechizoTierra tierra = (HechizoTierra) hechizosTotales.get(i);
-				puntuacion = (tierra.getDaño() +  tierra.getMejoraDefensa())/2;
+				puntuacion = (tierra.getDaño() *  tierra.getMejoraDefensa())/2;
 				puntuacionesOrdenada.add(puntuacion);
 				hechizosOrdenados.add(hechizosTotales.get(i));
 				break;
@@ -211,13 +210,13 @@ public class Sistema {
 		for(int i = 0; i < magosTotales.size(); i++) {
 			 ArrayList<Hechizo> hechizosmago = magosTotales.get(i).getHechizos();
 			 
-
+			 
 			 int puntajemago = HechizoListaPuntajes(hechizosmago, -2);
 			 puntajesMago.add(puntajemago);
 
 		}
 		Burbuja(puntajesMago,magosTotales,1);
-		int puntuaciones = 0;
+		
 		for(int j =0 ; j <  magosTotales.size() && j < 3; j++ ) {
 			 System.out.println(j+1 + ") MAGO:" + magosTotales.get(j).getNombre() + " y su puntuacion fue de " + puntajesMago.get(j));
 			

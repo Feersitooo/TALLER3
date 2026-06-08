@@ -79,7 +79,7 @@ Pirotecnia;fuego;52;3
 Disparo Lodo;tierra;48;29
 Giro Fuego;fuego;119;2
 Latigazo;planta;93;1,1
-Envite Igneo;fuego;47;4
+Envite igneo;fuego;47;4
 Patada Ígnea;fuego;82;1
 Fuego Sagrado;fuego;38;5
 Hoja Mágica;planta;52;1,10
